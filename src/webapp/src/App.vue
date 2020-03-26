@@ -14,7 +14,9 @@
           <span class="mr-2" >Login</span>
         </v-btn>
       </router-link>
-      <div  v-if="currentUser">Signed In</div>
+        <v-btn target="logout" text>
+            <span class="mr-2" >Log Out</span>
+        </v-btn>
     </v-app-bar>
     <v-content>
       <router-view> </router-view>
@@ -23,6 +25,7 @@
 </template>
 
 <script>
+import AuthService from '@/services/auth.service';
 export default {
   name: "App",
 
@@ -32,7 +35,14 @@ export default {
     {
         return this.$store.state.auth.user;
     }
-  }
+  },
+    methods: {
+      logout()
+      {
+          AuthService.logout();
+      }
+
+    }
 };
 
 </script>

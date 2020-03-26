@@ -8,18 +8,20 @@ THREE.PDBLoader.prototype = {
 
     constructor: THREE.PDBLoader,
 
-    load: function ( url, onLoad, onProgress, onError ) {
+    load: function ( text, onLoad, onProgress, onError ) {
 
         var scope = this;
 
         var loader = new THREE.XHRLoader( scope.manager );
-        loader.setCrossOrigin( this.crossOrigin );
+        var json = scope.parsePDB( text );
+        scope.createModel( json, onLoad );
+        /*loader.setCrossOrigin( this.crossOrigin );
         loader.load( url, function ( text ) {
 
             var json = scope.parsePDB( text );
             scope.createModel( json, onLoad );
 
-        }, onProgress, onError );
+        }, onProgress, onError );*/
 
     },
 
@@ -104,7 +106,6 @@ THREE.PDBLoader.prototype = {
             }
             else if(lines[i].substr(0,6)=="CONECT")
             {
-                window.console.log("sup");
                 var satom = parseInt( lines[i].substr(6,5) );
 
                 parseBond(11,5);
@@ -158,7 +159,6 @@ THREE.PDBLoader.prototype = {
 
         for ( var k = 0; k < bonds.length; k++ )
         {
-            window.console.log("Got here")
             var bond = bonds[ k ];
 
             var start = bond[ 0 ];
