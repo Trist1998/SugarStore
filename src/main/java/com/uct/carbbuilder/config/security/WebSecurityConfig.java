@@ -41,7 +41,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter
 	@Override
 	public void configure(AuthenticationManagerBuilder authenticationManagerBuilder) throws Exception
 	{
-		authenticationManagerBuilder.userDetailsService(userDetailsService).passwordEncoder(passwordEncoder());
+		//TODO FIX THIS authenticationManagerBuilder.userDetailsService(userDetailsService).passwordEncoder(passwordEncoder());
 	}
 
 	@Bean
@@ -67,6 +67,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter
                 .antMatchers("/user/**").permitAll()
 				.antMatchers("/api/test/**").permitAll()
                 .antMatchers("/carbbuilder/**").permitAll()
+                .antMatchers("/file/**").permitAll()
                 .antMatchers("output**").permitAll()
 				.anyRequest().authenticated();
 

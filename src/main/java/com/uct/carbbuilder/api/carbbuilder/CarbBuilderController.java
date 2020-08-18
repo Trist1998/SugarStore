@@ -26,6 +26,7 @@ public class CarbBuilderController
     @Value("${twoody.app.carbbuilderurl}")
     private String carbBuilderFileLocation;
 
+    @CrossOrigin(origins = "http://localhost:4200")
     @PostMapping("/build")
     public ResponseEntity<?> carbBuilderRequest(@RequestBody CarbBuilderRequest request) throws IOException
     {
@@ -33,10 +34,11 @@ public class CarbBuilderController
             return ResponseEntity.badRequest().body("Invalid Input");
 
         Optional<PdbEntry> optionalPdbEntry = pdbEntryAccess.findByCasperInput(request.getCasperInput(), request.getNoRepeatingUnits(), carbBuilderVersion);
-        String path = "";
+        //String path = "";
+        PdbEntry entry;
         if(!optionalPdbEntry.isPresent())
         {
-            PdbEntry entry = pdbEntryAccess.save(new PdbEntry(request.getCasperInput(), request.getNoRepeatingUnits(), carbBuilderVersion));
+            entry = pdbEntryAccess.save(new PdbEntry(request.getCasperInput(), request.getNoRepeatingUnits(), carbBuilderVersion));
             String filename = "output" + entry.getId();
             entry.setFilePath(filename + ".pdb");
             pdbEntryAccess.save(entry);
@@ -49,24 +51,25 @@ public class CarbBuilderController
 
             try
             {
-                pb.start();
+                Process p = pb.start();
+                p.waitFor();
             }
             catch (Exception e)
             {
                 System.out.println(e.toString());
                 return ResponseEntity.badRequest().body("Error occurred in the processing of this request");
             }
-            path = entry.getFilePath();
+            //path = entry.getFilePath();
         }
         else
         {
-           path = optionalPdbEntry.get().getFilePath();
+           entry = optionalPdbEntry.get();
         }
 
         try
         {
-            String fileOutput = fileToString(path);
-            return ResponseEntity.accepted().body(fileOutput);
+            //String fileOutput = fileToString(path);
+            return ResponseEntity.accepted().body(entry.getId());
         }
         catch(Exception e)
         {

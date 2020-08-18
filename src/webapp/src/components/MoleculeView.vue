@@ -24,7 +24,7 @@
                     </v-col>
                     <v-col cols="12">
                         <v-row justify="center">
-                            <molecule-window ref="mwindow"/>
+                            <lite-mol-viewer ref="mwindow"/>
                         </v-row>
                     </v-col>
                 </v-row>
@@ -39,12 +39,13 @@
 </template>
 
 <script>
+    import LiteMolViewer from "./LiteMolViewer";
     const API_URL = 'http://localhost:80/';
-    import MoleculeWindow from "./MoleculeWindow";
+    //import MoleculeWindow from "./MoleculeWindow";
     import axios from 'axios';
     export default {
         name: "MoleculeView",
-        components: {MoleculeWindow},
+        components: {LiteMolViewer},//, MoleculeWindow},
         data (){
             return {
                 casperInput: "",
