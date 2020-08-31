@@ -33,8 +33,8 @@ public class CarbBuilderConsoleOutputManager extends Thread
             while ( (line = reader.readLine()) != null)
             {
                 consoleOutputBuilder.append(line).append(System.getProperty("line.separator"));
-                if (line.contains("FINAL linkage"))
-                    linkageBuilder.append(line).append(System.getProperty("line.separator"));
+                if (line.contains("FINAL linkage:"))
+                    linkageBuilder.append(line.replaceAll("FINAL linkage:", "").trim()).append(System.getProperty("line.separator"));
                 else if(line.contains("PDB file Built:"))
                     entry.setBuildSuccess();
             }
