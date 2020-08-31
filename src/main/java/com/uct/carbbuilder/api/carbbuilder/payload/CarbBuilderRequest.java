@@ -4,6 +4,7 @@ public class CarbBuilderRequest
 {
     private String casperInput;
     private int noRepeatingUnits;
+    private String customDihedral;
 
     public String getCasperInput()
     {
@@ -30,4 +31,13 @@ public class CarbBuilderRequest
         return !getCasperInput().isEmpty();
     }
 
+    public String getCustomDihedral()
+    {
+        return customDihedral;
+    }
+
+    public void setCustomDihedral(String customDihedral)
+    {
+        this.customDihedral = customDihedral;
+    }
 }

@@ -7,10 +7,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
-import java.io.BufferedReader;
-import java.io.FileReader;
 import java.io.IOException;
+import java.security.NoSuchAlgorithmException;
 import java.util.Optional;
 
 @RestController
@@ -26,24 +24,27 @@ public class CarbBuilderController
     @Value("${twoody.app.carbbuilderurl}")
     private String carbBuilderFileLocation;
 
+    private static final String outputFolder = "pdbfiles/";
+
     @CrossOrigin(origins = "http://localhost:4200")
     @PostMapping("/build")
-    public ResponseEntity<?> carbBuilderRequest(@RequestBody CarbBuilderRequest request) throws IOException
+    public ResponseEntity<?> carbBuilderRequest(@RequestBody CarbBuilderRequest request) throws NoSuchAlgorithmException, IOException
     {
         if(!request.isValid())
             return ResponseEntity.badRequest().body("Invalid Input");
+        String buildHash = PdbEntry.getCasperHash(request.getCasperInput(), request.getNoRepeatingUnits(), carbBuilderVersion, request.getCustomDihedral());
 
-        Optional<PdbEntry> optionalPdbEntry = pdbEntryAccess.findByCasperInput(request.getCasperInput(), request.getNoRepeatingUnits(), carbBuilderVersion);
-        //String path = "";
+        Optional<PdbEntry> optionalPdbEntry = pdbEntryAccess.findByHash(buildHash);
         PdbEntry entry;
         if(!optionalPdbEntry.isPresent())
         {
-            entry = pdbEntryAccess.save(new PdbEntry(request.getCasperInput(), request.getNoRepeatingUnits(), carbBuilderVersion));
-            String filename = "output" + entry.getId();
+            entry = pdbEntryAccess.save(new PdbEntry(request.getCasperInput(), request.getNoRepeatingUnits(), carbBuilderVersion, request.getCustomDihedral()));
+            String filename = outputFolder + "output" + entry.getId();
             entry.setFilePath(filename + ".pdb");
+            entry.setBuildInProgress();
             pdbEntryAccess.save(entry);
             ProcessBuilder pb = new ProcessBuilder(carbBuilderFileLocation, "-i", request.getCasperInput(), "-o", filename);
-            if(request.getNoRepeatingUnits() > 0)
+            if(request.getNoRepeatingUnits() >= 0)
             {
                 pb.command().add("-r");
                 pb.command().add(String.valueOf(request.getNoRepeatingUnits()));
@@ -51,50 +52,22 @@ public class CarbBuilderController
 
             try
             {
-                Process p = pb.start();
-                p.waitFor();
+                CarbBuilderConsoleOutputManager manager = new CarbBuilderConsoleOutputManager(pb, entry, pdbEntryAccess);
+                manager.start();
             }
             catch (Exception e)
             {
                 System.out.println(e.toString());
                 return ResponseEntity.badRequest().body("Error occurred in the processing of this request");
             }
-            //path = entry.getFilePath();
         }
         else
         {
            entry = optionalPdbEntry.get();
         }
 
-        try
-        {
-            //String fileOutput = fileToString(path);
-            return ResponseEntity.accepted().body(entry.getId());
-        }
-        catch(Exception e)
-        {
-            return ResponseEntity.badRequest().body("Error occurred in the processing of this request");
-        }
+        return ResponseEntity.accepted().body(entry.getBuildHash());
 
-    }
-
-    private static String fileToString(String filePath) throws Exception
-    {
-        StringBuilder contentBuilder = new StringBuilder();
-        try (BufferedReader br = new BufferedReader(new FileReader(filePath)))
-        {
-
-            String sCurrentLine;
-            while ((sCurrentLine = br.readLine()) != null)
-            {
-                contentBuilder.append(sCurrentLine).append("\n");
-            }
-        }
-        catch (IOException e)
-        {
-            throw e;
-        }
-        return contentBuilder.toString();
     }
 
 }
