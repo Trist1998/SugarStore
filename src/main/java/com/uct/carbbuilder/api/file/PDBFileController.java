@@ -19,14 +19,14 @@ public class PDBFileController
     private PdbEntryAccess pdbEntryAccess;
 
     @CrossOrigin(origins = "http://localhost:4200")
-    @RequestMapping(value = "/{buildHash}", method = RequestMethod.GET)
+    @RequestMapping(value = "download/{buildHash}", method = RequestMethod.GET)
     public void getFileDownload(@PathVariable("buildHash") String buildHash, HttpServletResponse response) throws IOException
     {
         String fileName = "Not Found";
         try
         {
             response.setContentType("application/pdb");
-            fileName = pdbEntryAccess.findByHash(buildHash).get().getFilePath();
+            fileName = pdbEntryAccess.findByHash(buildHash).get().getPdbFilePath();
             response.setHeader("Content-Disposition", "attachment; filename=\"" + fileName+ "\"");
             InputStream is = new FileInputStream(new File(fileName));
             IOUtils.copy(is, response.getOutputStream());
@@ -51,7 +51,7 @@ public class PDBFileController
             responseData.put("buildStatus", entry.getBuildStatus());
             if (entry.isBuildSuccess())
             {
-                filePath = entry.getFilePath();
+                filePath = entry.getPdbFilePath();
                 String fileOutput = fileToString(filePath);
 
                 responseData.put("pdb", fileOutput);
