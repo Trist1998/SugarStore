@@ -12,6 +12,10 @@ public class PdbEntry
     public static final short SUCCESS = 1;
     public static final short FAILED = 2;
 
+    private static final String OUTPUT_FOLDER = "pdbfiles/";
+    private static final String DIHEDRAL_FOLDER = "dihedrals/";
+    private static final String CONSOLE_LOG_FOLDER = "faillogs/";
+
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private long id;
@@ -24,7 +28,8 @@ public class PdbEntry
     private int noRepeatingUnits;
 
     private String carbBuilderVersion;
-    private String filePath;
+    private String pdbFilePath;
+    private String dihedralFilePath;
     private Date createDate;
 
     @Column(columnDefinition="TEXT")
@@ -78,7 +83,22 @@ public class PdbEntry
         MessageDigest messageDigest = MessageDigest.getInstance("SHA-256");
         String input = casperInput +  " " + noRepeatingUnits + " " + carbBuilderVersion + " " + customDihedral;
         byte[] output = messageDigest.digest(input.getBytes());
-        return new String(output);
+        return escapeHash(output);
+    }
+
+    private static String escapeHash(byte[] bytes)
+    {
+        String out = "";
+        for(byte by: bytes)
+        {
+            int b = Math.abs(by);
+            if(b < 48 || (b > 57 && b < 65) || (b > 90 && b < 97) || b > 122)
+                out += (int) b;
+            else
+                out += (char)b;
+
+        }
+        return out;
     }
 
     public int getNoRepeatingUnits()
@@ -106,14 +126,19 @@ public class PdbEntry
         this.carbBuilderVersion = carbBuilderVersion;
     }
 
-    public String getFilePath()
+    public String getPdbFilePath()
     {
-        return filePath;
+        if (pdbFilePath == null || pdbFilePath.equals(""))
+        {
+            pdbFilePath = OUTPUT_FOLDER + "output" + id + ".pdb";
+        }
+
+        return pdbFilePath;
     }
 
-    public void setFilePath(String filePath)
+    public void setPdbFilePath(String filePath)
     {
-        this.filePath = filePath;
+        this.pdbFilePath = filePath;
     }
 
     public Date getCreateDate()
@@ -138,6 +163,11 @@ public class PdbEntry
 
     public String getConsoleOutput()
     {
+        if (consoleOutput == null || consoleOutput.equals(""))
+        {
+            consoleOutput = CONSOLE_LOG_FOLDER + "console" + id + ".log";
+        }
+
         return consoleOutput;
     }
 
@@ -200,4 +230,21 @@ public class PdbEntry
     {
         return buildStatus;
     }
+
+    public String getDihedralFilePath()
+    {
+        if (dihedralFilePath == null || dihedralFilePath.equals(""))
+        {
+            dihedralFilePath = DIHEDRAL_FOLDER + "dihedral" + id + ".txt";
+        }
+
+        return dihedralFilePath;
+    }
+
+    public void setDihedralFilePath(String dihedralFilePath)
+    {
+        this.dihedralFilePath = dihedralFilePath;
+    }
+
 }
+

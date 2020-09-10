@@ -68,10 +68,6 @@ public class CarbBuilderController
 
             try
             {
-                for (String cm: pb.command())
-                {
-                    System.out.println(cm);
-                }
                 CarbBuilderConsoleOutputManager manager = new CarbBuilderConsoleOutputManager(pb, entry, pdbEntryAccess);
                 manager.start();
             }
