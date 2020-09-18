@@ -8,52 +8,29 @@ import java.util.Date;
 @Entity
 public class PdbEntry
 {
-    public static final short IN_PROGRESS = 0;
-    public static final short SUCCESS = 1;
-    public static final short FAILED = 2;
-
-    private static final String OUTPUT_FOLDER = "pdbfiles/";
-    private static final String DIHEDRAL_FOLDER = "dihedrals/";
-    private static final String CONSOLE_LOG_FOLDER = "faillogs/";
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private long id;
 
-    @Column(unique = true)
-    private String buildHash;
-
-    @Column(columnDefinition="TEXT")
-    private String casperInput;
-    private int noRepeatingUnits;
-
-    private String carbBuilderVersion;
     private String pdbFilePath;
-    private String dihedralFilePath;
-    private Date createDate;
 
-    @Column(columnDefinition="TEXT")
-    private String consoleOutput;
-
-    private short buildStatus;
+    private long pdbBuildId;
 
     @Column(columnDefinition="TEXT")
     private String linkages;
 
-    @Column(columnDefinition="TEXT")
-    private String customDihedral;
+    private Date createDate;
 
     public PdbEntry()
     {
     }
 
-    public PdbEntry(String casperInput, int noRepeatingUnits, String carbBuilderVersion, String customDihedral) throws NoSuchAlgorithmException
+    public PdbEntry(long pdbBuildId, String fileName)
     {
-        this.buildHash = getCasperHash(casperInput, noRepeatingUnits, carbBuilderVersion, customDihedral);
-        this.casperInput = casperInput;
-        this.noRepeatingUnits = noRepeatingUnits;
-        this.carbBuilderVersion = carbBuilderVersion;
+        this.pdbBuildId = pdbBuildId;
         this.createDate = new Date();
+        this.pdbFilePath = fileName;
     }
 
 
@@ -66,16 +43,6 @@ public class PdbEntry
     public void setId(long id)
     {
         this.id = id;
-    }
-
-    public String getCasperInput()
-    {
-        return casperInput;
-    }
-
-    public void setCasperInput(String casperInput)
-    {
-        this.casperInput = casperInput;
     }
 
     public static String getCasperHash(String casperInput, int noRepeatingUnits, String carbBuilderVersion, String customDihedral) throws NoSuchAlgorithmException
@@ -101,119 +68,14 @@ public class PdbEntry
         return out;
     }
 
-    public int getNoRepeatingUnits()
-    {
-        return noRepeatingUnits;
-    }
-
-    public void setNoRepeatingUnits(int noRepeatingUnits)
-    {
-        this.noRepeatingUnits = noRepeatingUnits;
-    }
-
-    public boolean isValid()
-    {
-        return !getCasperInput().isEmpty();
-    }
-
-    public String getCarbBuilderVersion()
-    {
-        return carbBuilderVersion;
-    }
-
-    public void setCarbBuilderVersion(String carbBuilderVersion)
-    {
-        this.carbBuilderVersion = carbBuilderVersion;
-    }
-
     public String getPdbFilePath()
     {
-        if (pdbFilePath == null || pdbFilePath.equals(""))
-        {
-            pdbFilePath = OUTPUT_FOLDER + "output" + id + ".pdb";
-        }
-
         return pdbFilePath;
     }
 
     public void setPdbFilePath(String filePath)
     {
         this.pdbFilePath = filePath;
-    }
-
-    public Date getCreateDate()
-    {
-        return createDate;
-    }
-
-    public void setCreateDate(Date createDate)
-    {
-        this.createDate = createDate;
-    }
-
-    public String getBuildHash()
-    {
-        return buildHash;
-    }
-
-    public void setBuildHash(String casperHash)
-    {
-        this.buildHash = casperHash;
-    }
-
-    public String getConsoleOutput()
-    {
-        if (consoleOutput == null || consoleOutput.equals(""))
-        {
-            consoleOutput = CONSOLE_LOG_FOLDER + "console" + id + ".log";
-        }
-
-        return consoleOutput;
-    }
-
-    public void setConsoleOutput(String consoleOutput)
-    {
-        this.consoleOutput = consoleOutput;
-    }
-
-    public boolean isBuildInProgress()
-    {
-        return buildStatus == IN_PROGRESS;
-    }
-
-    public void setBuildInProgress()
-    {
-        this.buildStatus = IN_PROGRESS;
-    }
-
-    public boolean isBuildSuccess()
-    {
-        return buildStatus == SUCCESS;
-    }
-
-    public void setBuildSuccess()
-    {
-        this.buildStatus = SUCCESS;
-    }
-
-    public boolean isBuildFailed()
-    {
-        return buildStatus == FAILED;
-    }
-
-    public void setBuildFailed()
-    {
-        this.buildStatus = FAILED;
-    }
-
-    public String getCustomDihedral()
-    {
-        return customDihedral;
-    }
-
-    public void setCustomDihedral(String customDihedral)
-    {
-        this.customDihedral = customDihedral;
     }
 
     public String getLinkages()
@@ -226,25 +88,24 @@ public class PdbEntry
         this.linkages = linkages;
     }
 
-    public short getBuildStatus()
+    public Date getCreateDate()
     {
-        return buildStatus;
+        return createDate;
     }
 
-    public String getDihedralFilePath()
+    public void setCreateDate(Date createDate)
     {
-        if (dihedralFilePath == null || dihedralFilePath.equals(""))
-        {
-            dihedralFilePath = DIHEDRAL_FOLDER + "dihedral" + id + ".txt";
-        }
-
-        return dihedralFilePath;
+        this.createDate = createDate;
     }
 
-    public void setDihedralFilePath(String dihedralFilePath)
+    public long getPdbBuildId()
     {
-        this.dihedralFilePath = dihedralFilePath;
+        return pdbBuildId;
     }
 
+    public void setPdbBuildId(long pdbBuildId)
+    {
+        this.pdbBuildId = pdbBuildId;
+    }
 }
 

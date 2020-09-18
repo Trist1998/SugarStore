@@ -1,6 +1,8 @@
 package com.uct.carbbuilder.api.carbbuilder;
 
 import com.uct.carbbuilder.api.carbbuilder.payload.CarbBuilderRequest;
+import com.uct.carbbuilder.model.build.PdbBuild;
+import com.uct.carbbuilder.model.build.PdbBuildAccess;
 import com.uct.carbbuilder.model.pdbmanager.PdbEntry;
 import com.uct.carbbuilder.model.pdbmanager.PdbEntryAccess;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,6 +20,9 @@ import java.util.Optional;
 @RequestMapping(path = "/carbbuilder")
 public class CarbBuilderController
 {
+    @Autowired
+    private PdbBuildAccess pdbBuildAccess;
+
     @Autowired
     private PdbEntryAccess pdbEntryAccess;
 
@@ -40,35 +45,19 @@ public class CarbBuilderController
         if(!request.isValid())
             return ResponseEntity.badRequest().body("Invalid Input");
         String buildHash = PdbEntry.getCasperHash(request.getCasperInput(), request.getNoRepeatingUnits(), carbBuilderVersion, request.getCustomDihedral());
-        Optional<PdbEntry> optionalPdbEntry = pdbEntryAccess.findByHash(buildHash);
-        PdbEntry entry;
-        if(!optionalPdbEntry.isPresent())
+        Optional<PdbBuild> optionalPdbBuild = pdbBuildAccess.findByHash(buildHash);
+        PdbBuild build;
+        if(!optionalPdbBuild.isPresent())
         {
-            entry = pdbEntryAccess.save(new PdbEntry(request.getCasperInput(), request.getNoRepeatingUnits(), carbBuilderVersion, request.getCustomDihedral()));
-            if (!request.getCustomDihedral().trim().equals(""))
-            {
-                FileWriter writer = new FileWriter(new File(System.getProperty("user.dir") + "/" + entry.getDihedralFilePath()));
-                writer.write(request.getCustomDihedral());
-                writer.close();
-            }
-            String filename = entry.getPdbFilePath().replaceAll(".pdb", "");
-            entry.setBuildInProgress();
-            pdbEntryAccess.save(entry);
-            ProcessBuilder pb;
-            if (onLinux)
-                pb = new ProcessBuilder("mono", carbBuilderFileLocation, "-i", request.getCasperInput(), "-o", System.getProperty("user.dir")+ "/" + filename);
-            else
-                pb = new ProcessBuilder( carbBuilderFileLocation, "-i", request.getCasperInput(), "-o", filename);
+            build = pdbBuildAccess.save(new PdbBuild(request, carbBuilderVersion));
 
-            if(request.getNoRepeatingUnits() > 0)
-            {
-                pb.command().add("-r");
-                pb.command().add(String.valueOf(request.getNoRepeatingUnits()));
-            }
+            build.setBuildInProgress();
+
+            pdbBuildAccess.save(build);
 
             try
             {
-                CarbBuilderConsoleOutputManager manager = new CarbBuilderConsoleOutputManager(pb, entry, pdbEntryAccess);
+                CarbBuilderConsoleOutputManager manager = new CarbBuilderConsoleOutputManager(build, pdbBuildAccess, pdbEntryAccess, carbBuilderFileLocation, onLinux);
                 manager.start();
             }
             catch (Exception e)
@@ -79,10 +68,10 @@ public class CarbBuilderController
         }
         else
         {
-           entry = optionalPdbEntry.get();
+           build = optionalPdbBuild.get();
         }
 
-        return ResponseEntity.accepted().body(entry.getBuildHash());
+        return ResponseEntity.accepted().body(build.getBuildHash());
 
     }
 
