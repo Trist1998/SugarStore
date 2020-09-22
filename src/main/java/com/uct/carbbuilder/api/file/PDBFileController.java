@@ -24,8 +24,8 @@ public class PDBFileController
     private PdbBuildAccess pdbBuildAccess;
 
     @CrossOrigin(origins = "http://localhost:4200")
-    @RequestMapping(value = "download/{buildHash}", method = RequestMethod.GET)
-    public void getFileDownload(@PathVariable("buildHash") String buildHash, HttpServletResponse response) throws IOException
+    @RequestMapping(value = "download/pdb/{buildHash}", method = RequestMethod.GET)
+    public void getPDBFileDownload(@PathVariable("buildHash") String buildHash, HttpServletResponse response) throws IOException
     {
         String fileName = "Not Found";
         try
@@ -35,6 +35,35 @@ public class PDBFileController
             if (build.isBuildSuccess())
             {
                 fileName = pdbEntryAccess.findByBuildId(build.getId()).get().getPdbFilePath();
+                response.setHeader("Content-Disposition", "attachment; filename=\"" + fileName + "\"");
+                InputStream is = new FileInputStream(new File(fileName));
+                IOUtils.copy(is, response.getOutputStream());
+                response.flushBuffer();
+            }
+            else
+            {
+                response.sendError(0, "File not found");
+            }
+        }
+        catch (IOException ex)
+        {
+            System.out.println("Error writing file to output stream. Filename was " + fileName);
+            response.sendError(-1, "Output Not found");
+        }
+    }
+
+    @CrossOrigin(origins = "http://localhost:4200")
+    @RequestMapping(value = "download/psf/{buildHash}", method = RequestMethod.GET)
+    public void getPSFFileDownload(@PathVariable("buildHash") String buildHash, HttpServletResponse response) throws IOException
+    {
+        String fileName = "Not Found";
+        try
+        {
+            response.setContentType("application/pdb");
+            PdbBuild build = pdbBuildAccess.findByHash(buildHash).get();
+            if (build.isBuildSuccess())
+            {
+                fileName = pdbEntryAccess.findByBuildId(build.getId()).get().getPdbFilePath().replace(".pdb", "_prePSFgen.pdb");
                 response.setHeader("Content-Disposition", "attachment; filename=\"" + fileName+ "\"");
                 InputStream is = new FileInputStream(new File(fileName));
                 IOUtils.copy(is, response.getOutputStream());

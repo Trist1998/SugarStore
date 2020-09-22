@@ -9,16 +9,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
-import java.io.File;
-import java.io.FileWriter;
 import java.io.IOException;
 import java.security.NoSuchAlgorithmException;
 import java.util.Optional;
 
 @RestController
 @RequestMapping(path = "/carbbuilder")
-public class CarbBuilderController
+public class BuildRequestController
 {
     @Autowired
     private PdbBuildAccess pdbBuildAccess;
@@ -57,7 +54,7 @@ public class CarbBuilderController
 
             try
             {
-                CarbBuilderConsoleOutputManager manager = new CarbBuilderConsoleOutputManager(build, pdbBuildAccess, pdbEntryAccess, carbBuilderFileLocation, onLinux);
+                CarbBuilderProcessManager manager = new CarbBuilderProcessManager(build, pdbBuildAccess, pdbEntryAccess, carbBuilderFileLocation, onLinux);
                 manager.start();
             }
             catch (Exception e)

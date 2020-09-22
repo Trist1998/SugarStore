@@ -8,7 +8,7 @@ import com.uct.carbbuilder.model.pdbmanager.PdbEntryAccess;
 
 import java.io.*;
 
-public class CarbBuilderConsoleOutputManager extends Thread
+public class CarbBuilderProcessManager extends Thread
 {
     private PdbEntryAccess pdbEntryAccess;
     private PdbBuildAccess pdbBuildAccess;
@@ -18,7 +18,7 @@ public class CarbBuilderConsoleOutputManager extends Thread
 
 
 
-    public CarbBuilderConsoleOutputManager(PdbBuild build,  PdbBuildAccess pdbBuildAccess, PdbEntryAccess pdbEntryAccess, String carbBuilderFileLocation, boolean onLinux) throws IOException
+    public CarbBuilderProcessManager(PdbBuild build, PdbBuildAccess pdbBuildAccess, PdbEntryAccess pdbEntryAccess, String carbBuilderFileLocation, boolean onLinux) throws IOException
     {
         this.build = build;
         this.pdbBuildAccess = pdbBuildAccess;
@@ -50,6 +50,8 @@ public class CarbBuilderConsoleOutputManager extends Thread
             process.command().add("-d");
             process.command().add(build.getDihedralFilePath());
         }
+
+        process.command().add("-PSF");
     }
 
     @Override
@@ -90,11 +92,13 @@ public class CarbBuilderConsoleOutputManager extends Thread
                 {
                     failReason = "Unsupported Residues: " + line.substring(line.indexOf('{') + 1, line.indexOf('}'));
                 }
-                else if(line.contains("PDB file Built:"))
-                    build.setBuildSuccess();
+
             }
             p.waitFor();
-
+            if (linkageBuilder.toString().isEmpty())
+                build.setBuildFailed();
+            else
+                build.setBuildSuccess();
 
             if (!build.isBuildSuccess())
             {
