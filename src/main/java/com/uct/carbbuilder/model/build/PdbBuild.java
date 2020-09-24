@@ -41,6 +41,8 @@ public class PdbBuild
 
     private String failReason;
 
+    private boolean psfBuilt;
+
     private Date createDate;
 
     public PdbBuild()
@@ -246,5 +248,15 @@ public class PdbBuild
     public String getPdbFilePath()
     {
         return OUTPUT_FOLDER + "output" + id + ".pdb";
+    }
+
+    public boolean isPsfBuilt()
+    {
+        return psfBuilt;
+    }
+
+    public void setPsfBuilt(boolean psfBuilt)
+    {
+        this.psfBuilt = psfBuilt;
     }
 }

@@ -107,5 +107,10 @@ public class PdbEntry
     {
         this.pdbBuildId = pdbBuildId;
     }
+
+    public String getPsfFilePath()
+    {
+        return pdbFilePath.replace(".pdb", ".psf");
+    }
 }
 

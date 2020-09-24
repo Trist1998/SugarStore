@@ -114,6 +114,7 @@ public class CarbBuilderProcessManager extends Thread
                 PdbEntry entry = new PdbEntry(build.getId(), build.getPdbFilePath());
                 entry.setLinkages(linkageBuilder.toString());
                 pdbEntryAccess.save(entry);
+                build.setPsfBuilt(new File(entry.getPsfFilePath()).exists());
             }
 
             pdbBuildAccess.save(build);

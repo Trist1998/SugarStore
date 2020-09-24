@@ -63,7 +63,7 @@ public class PDBFileController
             PdbBuild build = pdbBuildAccess.findByHash(buildHash).get();
             if (build.isBuildSuccess())
             {
-                fileName = pdbEntryAccess.findByBuildId(build.getId()).get().getPdbFilePath().replace(".pdb", "_prePSFgen.pdb");
+                fileName = pdbEntryAccess.findByBuildId(build.getId()).get().getPdbFilePath().replace(".pdb", ".psf");
                 response.setHeader("Content-Disposition", "attachment; filename=\"" + fileName+ "\"");
                 InputStream is = new FileInputStream(new File(fileName));
                 IOUtils.copy(is, response.getOutputStream());
@@ -95,10 +95,10 @@ public class PDBFileController
             responseData.put("buildStatus", build.getBuildStatus());
             if (build.isBuildSuccess())
             {
+                responseData.put("psfBuilt", build.isPsfBuilt());
                 PdbEntry entry = pdbEntryAccess.findByBuildId(build.getId()).get();
                 filePath = entry.getPdbFilePath();
                 String fileOutput = fileToString(filePath);
-
                 responseData.put("pdb", fileOutput);
                 responseData.put("linkages", entry.getLinkages());
             }
