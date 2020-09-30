@@ -2,9 +2,9 @@ package com.uct.carbbuilder.api.file;
 
 import com.uct.carbbuilder.api.file.payload.PDBFileRequest;
 import com.uct.carbbuilder.model.build.PdbBuild;
-import com.uct.carbbuilder.model.build.PdbBuildAccess;
+import com.uct.carbbuilder.model.build.PdbBuildAccessService;
 import com.uct.carbbuilder.model.pdbmanager.PdbEntry;
-import com.uct.carbbuilder.model.pdbmanager.PdbEntryAccess;
+import com.uct.carbbuilder.model.pdbmanager.PdbEntryAccessService;
 import net.minidev.json.JSONObject;
 import org.apache.tomcat.util.http.fileupload.IOUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,10 +18,10 @@ import java.io.*;
 public class PDBFileController
 {
     @Autowired
-    private PdbEntryAccess pdbEntryAccess;
+    private PdbEntryAccessService pdbEntryAccess;
 
     @Autowired
-    private PdbBuildAccess pdbBuildAccess;
+    private PdbBuildAccessService pdbBuildAccess;
 
     @CrossOrigin(origins = "http://localhost:4200")
     @RequestMapping(value = "download/pdb/{buildHash}", method = RequestMethod.GET)
@@ -31,7 +31,7 @@ public class PDBFileController
         try
         {
             response.setContentType("application/pdb");
-            PdbBuild build = pdbBuildAccess.findByHash(buildHash).get();
+            PdbBuild build = pdbBuildAccess.findByBuildHash(buildHash).get();
             if (build.isBuildSuccess())
             {
                 fileName = pdbEntryAccess.findByBuildId(build.getId()).get().getPdbFilePath();
@@ -60,7 +60,7 @@ public class PDBFileController
         try
         {
             response.setContentType("application/pdb");
-            PdbBuild build = pdbBuildAccess.findByHash(buildHash).get();
+            PdbBuild build = pdbBuildAccess.findByBuildHash(buildHash).get();
             if (build.isBuildSuccess())
             {
                 fileName = pdbEntryAccess.findByBuildId(build.getId()).get().getPdbFilePath().replace(".pdb", ".psf");
@@ -89,7 +89,7 @@ public class PDBFileController
         PdbBuild build;
         try
         {
-            build =  pdbBuildAccess.findByHash(request.getBuildHash()).get();
+            build =  pdbBuildAccess.findByBuildHash(request.getBuildHash()).get();
 
             JSONObject responseData = new JSONObject();
             responseData.put("buildStatus", build.getBuildStatus());

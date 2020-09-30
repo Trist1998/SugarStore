@@ -4,7 +4,8 @@ aDAll a-D-Allp.pdb a-D-alloseaDAllf a-D-Allf.pdb a-D-allose-f(furanose form)aD
 aDGalf a-D-Galf.pdb a-D-galactofuranose
 aDGal23PyR aDGal23PyR.pdb -a-D-Galp23(R)Pyr
 aDGal23PyS aDGal23PyS.pdb -a-D-Galp23(S)PyraDGal46PyA aDGal46PyA.pdb a-D-pyruvyl-galactopyranose(axial)aDGal46PyE aDGal46PyE.pdb a-D-pyruvyl-galactopyranose(equatorial)aDGalA a-D-GalpA.pdbaDGlc a-D-Glcp.pdb a-D-glucopyranose
-aDGlc23PyR aDGlc23PyR.pdb -a-D-Glcp23(R)PyraDGlc23PyS aDGlc23PyS.pdb -a-D-Glcp23(S)PyraDGlc46PyA aDGlc46PyA.pdbaDGlc46PyE aDGlc46PyE.pdbaDGlcA a-D-GlcpA.pdbaDGlc6A a-D-GlcpA.pdbaDGlcnac a-D-GlcpNAc.pdbaDIdo a-D-Idop.pdb a-D-idopyranose
+aDGlc23PyR aDGlc23PyR.pdb -a-D-Glcp23(R)PyraDGlc23PyS aDGlc23PyS.pdb -a-D-Glcp23(S)PyraDGlc46PyA aDGlc46PyA.pdbaDGlc46PyE aDGlc46PyE.pdbaDGlcA a-D-GlcpA.pdbaDGlc6A a-D-GlcpA.pdbaDGlcnac a-D-GlcpNAc.pdb
+aDHep L-a-D-Hep.pdbaDIdo a-D-Idop.pdb a-D-idopyranose
 aDIdoA aidoa_olgun.pdb
 aDKdo a-D-Kdop.pdb 3-Deoxy-D-manno-oct-2-ulosonic_acidaKdo a-D-Kdop.pdb 3-Deoxy-D-manno-oct-2-ulosonic_acidaDLyx a-D-Lyxp.pdb a-D-lyxopyranoseaDLyxf a-D-Lyxf.pdb a-D-lyxofuranoseaDMan a-D-Manp_gg.pdb a-D-manopyranose
 aDMan23PyR aDMan23PyR.pdb -a-D-Manp23(R)PyraDMan23PyS aDMan23PyS.pdb -a-D-Manp23(S)PyraDMan46PyA aDMan46PyA.pdb a-D-pyruvyl-mannopyranose(axial)aDMan46PyE aDMan46PyE.pdb a-D-pyruvyl-mannopyranose(equatorial)aDManA a-D-ManpA.pdbaDManf a-D-Manf.pdb a-D-manofuranoseaDMannac a-D-ManNAc.pdb
@@ -16,7 +17,8 @@ aDTal a-D-Talp.pdb a-D-talose
 aDTyv a-D-Tyvp.pdb a-tyvelose(3,6-dideoxy_mannose)aTyv a-D-Tyvp.pdb a-tyvelose(3,6-dideoxy_mannose)aDRibf a-D-Ribf.pdb a-D-ribofuranoseaDXyl a-D-Xylp.pdb a—D-xylose(6-deoxy-glucose)aDXylf a-D-Xylf.pdb a-D-xylofuranoseaLAll a-L-Allp.pdb a-L-alloseaLAlt a-L-Altp.pdb a-L-altroseaLAlt6d a-L-Altp6d.pdb 6-deoxy-a-L-altroseaLAra a-L-Arap.pdb a-L-arabinoseaLAraf a-L-Araf.pdb a-L-allose-f(furanose form)aLCol a-L-Colp.pdb a-colitose(3,6-dideoxy_L-galactose)aCol a-L-Colp.pdb a-colitose(3,6-dideoxy_L-galactose)aLFuc a-L-Fucp.pdb a-L-fucoseaLGal a-L-Galp.pdb a-L-galactoseaLGalA a-L-GalpA.pdbaLGlcA a-L-GlcpA.pdb
 aLGul a-L-Gulp.pdb a-L-guloseaLIdo a-L-Ido.pdb a-L-idopyranoseaLIdoA a-L-IdoA.pdb
 aLIdod aL6dIdo_4C1.pdb a-L-6-deoxy-IdoseaLIdod_1C4_ aL6dIdo_1C4.pdb a-L-6-deoxy-Idose(1C4_ring_conformation)aLIdod_4C1_ aL6dIdo_4C1.pdb a-L-6-deoxy-Idose(4C1_ring_conformation)aLLyx a-L-Lyxp.pdb a-L-lyxoseaLMan a-L-Manp.pdb a-L-mannoseaLManA a-L-ManpA.pdb
-aLPneNAc a-L-PneNAc.pdb 2-acetamido-2,6-dideoxy-l-talose(pneumosamine)aLRha a-L-Rhap.pdb a-rhamnose(6-deoxy_L-mannose)aLRib a-L-Ribp.pdb a-L-ribose
+aLPneNAc a-L-PneNAc.pdb 2-acetamido-2,6-dideoxy-l-talose(pneumosamine)aLRha a-L-Rhap.pdb a-rhamnose(6-deoxy_L-mannose)
+xLRha a-L-Rha_hack.pdbaLRib a-L-Ribp.pdb a-L-ribose
 aLTal a-L-Talp.pdb a-L-taloseaLXyl a-L-Xylp.pdb a-L-xylosebDAbe b-D-Abep.pdb b-abequose
 bAbe b-D-Abep.pdb b-abequose
 bDAll b-D-Allp.pdb b-D-allosebDAllf b-D-Allf.pdb b-D-allose(furanose_form)bDAlt b-D-Altp.pdb b-D-altrosebDAlt6d b-D-Altp6d.pdb 6-deoxy-b-D-altrosebDAra b-D-Arap.pdb b-D-arabinosebDEryf b-D-Eryf.pdb b-D-erythose(furanose_from)bDFru b-D-Frup.pdb b-D-FructosebDFruf b-D-Fruf.pdb b-D-fructose(furanose_form)bDFuc b-D-Fucp.pdb b-D-fucosebDGal b-D-Galp.pdb b-D-galactose
@@ -25,7 +27,8 @@ bDGal23PyS bDGal23PyS.pdb -b-D-Galp23(S)PyrbDGal46PyA bDGal46PyA.pdb b-D-pyruvy
 bDGalnac galnac_olgun.pdb#bDGalNAc galnac_olgun.pdb 
 bDGalNAcA bDGalNAcA.pdb
 bDGlc b-D-Glcp.pdb b-D-Glucose
-bDGlc23PyR bDGlc23PyR.pdb -b-D-Glcp23(R)PyrbDGlc23PyS bDGlc23PyS.pdb -b-D-Glcp23(S)PyrbDGlc46PyA bDGlc46PyA.pdb b-D-pyruvyl-glucopyranose(axial)bDGlc46PyE bDGlc46PyE.pdb b-D-pyruvyl-glucopyranose(equatorial)bDGlcA bglca_olgun.pdbbDGlc6A b-D-GlcpA.pdbbDGlcf b-D-Glcf.pdb b-D-glucose(furanose_form)bDGlcNAc b-D-GlcNAc_olgun.pdbbDGlcnac b-D-GlcNAc.pdbbDIdo b-D-Idop.pdb b-D-idosebDKdo b-D-Kdop.pdb 3-Deoxy-D-manno-oct-2-ulosonic_acidbKdo b-D-Kdop.pdb 3-Deoxy-D-manno-oct-2-ulosonic_acidbDLyx b-D-Lyxp.pdb b-L-lyxosebDLyxf b-D-Lyxf.pdb b-L-lyoxse(furanose_form)bDMan b-D-Manp.pdb b-D-mannose
+bDGlc23PyR bDGlc23PyR.pdb -b-D-Glcp23(R)PyrbDGlc23PyS bDGlc23PyS.pdb -b-D-Glcp23(S)PyrbDGlc46PyA bDGlc46PyA.pdb b-D-pyruvyl-glucopyranose(axial)bDGlc46PyE bDGlc46PyE.pdb b-D-pyruvyl-glucopyranose(equatorial)bDGlcA bglca_olgun.pdbbDGlc6A b-D-GlcpA.pdbbDGlcf b-D-Glcf.pdb b-D-glucose(furanose_form)#bDGlcNAc b-D-GlcNAc_olgun.pdb
+bDGlcNAc b-D-GlcNAc_alt.pdbbDGlcnac b-D-GlcNAc.pdbbDIdo b-D-Idop.pdb b-D-idosebDKdo b-D-Kdop.pdb 3-Deoxy-D-manno-oct-2-ulosonic_acidbKdo b-D-Kdop.pdb 3-Deoxy-D-manno-oct-2-ulosonic_acidbDLyx b-D-Lyxp.pdb b-L-lyxosebDLyxf b-D-Lyxf.pdb b-L-lyoxse(furanose_form)bDMan b-D-Manp.pdb b-D-mannose
 bDMan23PyR bDMan23PyR.pdb -b-D-Manp23(R)PyrbDMan23PyS bDMan23PyS.pdb -b-D-Manp23(S)PyrbDMan46PyA bDMan46PyA.pdb b-D-pyruvyl-mannopyranose(axial)bDMan46PyE bDMan46PyE.pdb b-D-pyruvyl-mannopyranose(equatorial)#bDManA b-D-ManpA.pdbbDManf b-D-Manf.pdb b-D-mannose(furanose_form)bDMannac b-D-ManNAc.pdb
 bDManNAcA bDManNAcA.pdb
 bDMurnac b-D-MurNAc.pdb N-Acetylmuramic_acidbDPar b-D-Parp.pdb b-paratose(3,6-dideoxy_glucose) bPar b-D-Parp.pdb b-paratose(3,6-dideoxy_glucose) bDQui b-D-Quip.pdb b-quinovose(6-deoxy_D-glucose)bQui b-D-Quip.pdb b-quinovose(6-deoxy_D-glucose)bDRib b-D-Ribp.pdb b-D-ribosebDRibf b-D-Ribf.pdb b-D-ribose (furanose_form)

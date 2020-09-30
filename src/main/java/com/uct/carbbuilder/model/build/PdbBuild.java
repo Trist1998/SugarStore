@@ -8,6 +8,7 @@ import java.security.NoSuchAlgorithmException;
 import java.util.Date;
 
 @Entity
+@Table
 public class PdbBuild
 {
     public static final short IN_PROGRESS = 0;
@@ -55,17 +56,18 @@ public class PdbBuild
         this.noRepeatingUnits = request.getNoRepeatingUnits();
         this.customDihedral = request.getCustomDihedral();
         this.carbBuilderVersion = carbBuilderVersion;
-        this.buildHash = getCasperHash(casperInput, noRepeatingUnits, carbBuilderVersion, customDihedral);
+        this.buildHash = getBuildHash(casperInput, noRepeatingUnits, carbBuilderVersion, customDihedral);
         this.createDate = new Date();
     }
 
     public PdbBuild(String casperInput, int noRepeatingUnits, String carbBuilderVersion, String customDihedral) throws NoSuchAlgorithmException
     {
-        this.buildHash = getCasperHash(casperInput, noRepeatingUnits, carbBuilderVersion, customDihedral);
+        this.buildHash = getBuildHash(casperInput, noRepeatingUnits, carbBuilderVersion, customDihedral);
         this.casperInput = casperInput;
         this.noRepeatingUnits = noRepeatingUnits;
         this.carbBuilderVersion = carbBuilderVersion;
         this.createDate = new Date();
+        this.customDihedral = customDihedral;
     }
 
 
@@ -82,6 +84,8 @@ public class PdbBuild
 
     public String getCasperInput()
     {
+        if(casperInput == null)
+            casperInput = "";
         return casperInput;
     }
 
@@ -90,7 +94,7 @@ public class PdbBuild
         this.casperInput = casperInput;
     }
 
-    public static String getCasperHash(String casperInput, int noRepeatingUnits, String carbBuilderVersion, String customDihedral) throws NoSuchAlgorithmException
+    public static String getBuildHash(String casperInput, int noRepeatingUnits, String carbBuilderVersion, String customDihedral) throws NoSuchAlgorithmException
     {
         MessageDigest messageDigest = MessageDigest.getInstance("SHA-256");
         String input = casperInput +  " " + noRepeatingUnits + " " + carbBuilderVersion + " " + customDihedral;

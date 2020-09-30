@@ -6,6 +6,7 @@ import java.security.NoSuchAlgorithmException;
 import java.util.Date;
 
 @Entity
+@Table
 public class PdbEntry
 {
 

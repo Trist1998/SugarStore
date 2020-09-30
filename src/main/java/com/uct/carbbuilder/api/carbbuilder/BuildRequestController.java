@@ -3,8 +3,10 @@ package com.uct.carbbuilder.api.carbbuilder;
 import com.uct.carbbuilder.api.carbbuilder.payload.CarbBuilderRequest;
 import com.uct.carbbuilder.model.build.PdbBuild;
 import com.uct.carbbuilder.model.build.PdbBuildAccess;
+import com.uct.carbbuilder.model.build.PdbBuildAccessService;
 import com.uct.carbbuilder.model.pdbmanager.PdbEntry;
 import com.uct.carbbuilder.model.pdbmanager.PdbEntryAccess;
+import com.uct.carbbuilder.model.pdbmanager.PdbEntryAccessService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
@@ -18,10 +20,10 @@ import java.util.Optional;
 public class BuildRequestController
 {
     @Autowired
-    private PdbBuildAccess pdbBuildAccess;
+    private PdbBuildAccessService pdbBuildAccess;
 
     @Autowired
-    private PdbEntryAccess pdbEntryAccess;
+    private PdbEntryAccessService pdbEntryAccess;
 
     @Value("${twoody.app.carbbuilderversion}")
     private String carbBuilderVersion;
@@ -42,7 +44,7 @@ public class BuildRequestController
         if(!request.isValid())
             return ResponseEntity.badRequest().body("Invalid Input");
         String buildHash = PdbEntry.getCasperHash(request.getCasperInput(), request.getNoRepeatingUnits(), carbBuilderVersion, request.getCustomDihedral());
-        Optional<PdbBuild> optionalPdbBuild = pdbBuildAccess.findByHash(buildHash);
+        Optional<PdbBuild> optionalPdbBuild = pdbBuildAccess.findByBuildHash(buildHash);
         PdbBuild build;
         if(!optionalPdbBuild.isPresent())
         {

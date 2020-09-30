@@ -1,24 +1,23 @@
 package com.uct.carbbuilder.api.carbbuilder;
 
-import com.uct.carbbuilder.api.carbbuilder.payload.CarbBuilderRequest;
 import com.uct.carbbuilder.model.build.PdbBuild;
-import com.uct.carbbuilder.model.build.PdbBuildAccess;
+import com.uct.carbbuilder.model.build.PdbBuildAccessService;
 import com.uct.carbbuilder.model.pdbmanager.PdbEntry;
-import com.uct.carbbuilder.model.pdbmanager.PdbEntryAccess;
+import com.uct.carbbuilder.model.pdbmanager.PdbEntryAccessService;
 
 import java.io.*;
 
 public class CarbBuilderProcessManager extends Thread
 {
-    private PdbEntryAccess pdbEntryAccess;
-    private PdbBuildAccess pdbBuildAccess;
+    private PdbEntryAccessService pdbEntryAccess;
+    private PdbBuildAccessService pdbBuildAccess;
 
     private ProcessBuilder process;
     private PdbBuild build;
 
 
 
-    public CarbBuilderProcessManager(PdbBuild build, PdbBuildAccess pdbBuildAccess, PdbEntryAccess pdbEntryAccess, String carbBuilderFileLocation, boolean onLinux) throws IOException
+    public CarbBuilderProcessManager(PdbBuild build, PdbBuildAccessService pdbBuildAccess, PdbEntryAccessService pdbEntryAccess, String carbBuilderFileLocation, boolean onLinux) throws IOException
     {
         this.build = build;
         this.pdbBuildAccess = pdbBuildAccess;
@@ -72,10 +71,13 @@ public class CarbBuilderProcessManager extends Thread
                 if (line.contains("FINAL linkage"))
                 {
                     line = line.substring(line.indexOf(':') + 1).trim();
-                    String res1 = line.substring(0, line.indexOf('('));
+                    String resid1 = line.substring(line.indexOf('#') + 1, line.indexOf(' '));
+                    String res1 = line.substring(line.indexOf(' ') + 1, line.indexOf('('));
                     String pos1 = line.substring(line.indexOf('(') + 1, line.indexOf('-'));
                     String pos2 = line.substring(line.indexOf('>') + 1, line.indexOf(')'));
-                    String res2 = line.substring(line.indexOf(')') + 1, line.indexOf(':'));
+                    String res2id2 = line.substring(line.indexOf(')') + 1, line.indexOf(':')).trim();
+                    String resid2 = res2id2.substring(res2id2.indexOf('#') + 1, res2id2.indexOf(' '));
+                    String res2 = res2id2.substring(res2id2.indexOf(' ') + 1);
                     String phi = line.substring(line.indexOf(':') + 1, line.indexOf(','));
                     String[] angles = line.substring(line.indexOf(',') + 1).split(",");
                     String psi = angles[0];
@@ -84,8 +86,7 @@ public class CarbBuilderProcessManager extends Thread
                     {
                         other += ',' + angles[i];
                     }
-                    String out = res1 + ' ' + pos1 + ' ' + pos2 + ' ' + res2 + ",2,";
-                    out += phi + ' ' + psi + ' ' + other;
+                    String out = resid1 + ' ' + res1 + ' ' + pos1 + ' ' + pos2 + ' ' + resid2 + ' ' + res2 + phi + ' ' + psi + ' ' + other;
                     linkageBuilder.append(out).append(System.getProperty("line.separator"));
                 }
                 else if(line.contains("not yet supported"))
