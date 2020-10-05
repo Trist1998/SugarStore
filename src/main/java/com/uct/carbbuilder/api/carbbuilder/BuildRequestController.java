@@ -2,16 +2,12 @@ package com.uct.carbbuilder.api.carbbuilder;
 
 import com.uct.carbbuilder.api.carbbuilder.payload.CarbBuilderRequest;
 import com.uct.carbbuilder.model.build.PdbBuild;
-import com.uct.carbbuilder.model.build.PdbBuildAccess;
 import com.uct.carbbuilder.model.build.PdbBuildAccessService;
-import com.uct.carbbuilder.model.pdbmanager.PdbEntry;
-import com.uct.carbbuilder.model.pdbmanager.PdbEntryAccess;
 import com.uct.carbbuilder.model.pdbmanager.PdbEntryAccessService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import java.io.IOException;
 import java.security.NoSuchAlgorithmException;
 import java.util.Optional;
 
@@ -33,23 +29,24 @@ public class BuildRequestController
     @Value("${twoody.app.onlinux}")
     private boolean onLinux;
 
-
-
-
-
     @CrossOrigin(origins = "http://localhost:4200")
     @PostMapping("/build")
-    public ResponseEntity<?> carbBuilderRequest(@RequestBody CarbBuilderRequest request) throws NoSuchAlgorithmException, IOException
+    public ResponseEntity<?> carbBuilderRequest(@RequestBody CarbBuilderRequest request) throws NoSuchAlgorithmException
     {
         if(!request.isValid())
             return ResponseEntity.badRequest().body("Invalid Input");
+        return handleBuildRequest(request);
+
+    }
+
+    private ResponseEntity<?> handleBuildRequest(CarbBuilderRequest request) throws NoSuchAlgorithmException
+    {
         String buildHash = PdbBuild.getBuildHash(request.getCasperInput(), request.getNoRepeatingUnits(), carbBuilderVersion, request.getCustomDihedral());
         Optional<PdbBuild> optionalPdbBuild = pdbBuildAccess.findByBuildHash(buildHash);
         PdbBuild build;
         if(!optionalPdbBuild.isPresent())
         {
             build = pdbBuildAccess.save(new PdbBuild(request, carbBuilderVersion));
-
             build.setBuildInProgress();
 
             pdbBuildAccess.save(build);
@@ -67,11 +64,11 @@ public class BuildRequestController
         }
         else
         {
-           build = optionalPdbBuild.get();
+            build = optionalPdbBuild.get();
         }
 
         return ResponseEntity.accepted().body(build.getBuildHash());
-
     }
+
 
 }

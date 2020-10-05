@@ -70,9 +70,11 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter
 				.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS).and()
 				.authorizeRequests()
                 .antMatchers("/user/**").permitAll()
+                .antMatchers("/carbbuilder/**").permitAll()
                 .antMatchers("/carbbuilder/carbbuilder/**").permitAll()
                 .antMatchers("/carbbuilder/file/**").permitAll()
                 .antMatchers("/carbbuilder/file/text/**").permitAll()
+                .antMatchers("/file/text/**").permitAll()
                 .antMatchers("output**").permitAll()
 				.anyRequest().authenticated();
 

@@ -82,14 +82,14 @@ public class PDBFileController
     }
 
     @CrossOrigin(origins = "http://localhost:4200")
-    @RequestMapping(value = "/text", method = RequestMethod.POST)
-    public ResponseEntity<?> getFileText(@RequestBody PDBFileRequest request, HttpServletResponse response)
+    @RequestMapping(value = "/text/{buildHash}", method = RequestMethod.GET)
+    public ResponseEntity<?> getFileText(@PathVariable("buildHash") String buildHash, HttpServletResponse response)
     {
         String filePath = "Not Found";
         PdbBuild build;
         try
         {
-            build =  pdbBuildAccess.findByBuildHash(request.getBuildHash()).get();
+            build =  pdbBuildAccess.findByBuildHash(buildHash).get();
 
             JSONObject responseData = new JSONObject();
             responseData.put("buildStatus", build.getBuildStatus());
@@ -116,7 +116,7 @@ public class PDBFileController
         }
     }
 
-    private static String fileToString(String filePath) throws IOException
+    public static String fileToString(String filePath) throws IOException
     {
         StringBuilder contentBuilder = new StringBuilder();
         BufferedReader br = new BufferedReader(new FileReader(filePath));

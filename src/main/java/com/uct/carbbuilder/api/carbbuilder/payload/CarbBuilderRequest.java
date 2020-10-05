@@ -6,6 +6,18 @@ public class CarbBuilderRequest
     private int noRepeatingUnits;
     private String customDihedral;
 
+    public CarbBuilderRequest()
+    {
+
+    }
+
+    public CarbBuilderRequest(String casperInput, int noRepeatingUnits, String customDihedral)
+    {
+        this.casperInput = casperInput;
+        this.noRepeatingUnits = noRepeatingUnits;
+        this.customDihedral = customDihedral;
+    }
+
     public String getCasperInput()
     {
         return casperInput;
