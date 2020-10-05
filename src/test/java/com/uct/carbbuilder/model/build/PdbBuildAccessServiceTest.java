@@ -46,6 +46,8 @@ class PdbBuildAccessServiceTest
             PdbBuild found = testPdbBuildService.findByBuildHash(build.getBuildHash()).get();
             assertEquals(found.getCasperInput(), testbuild.getCasperInput());
         }
+        else
+            fail();
 
     }
 

@@ -46,29 +46,6 @@ public class PdbEntry
         this.id = id;
     }
 
-    public static String getCasperHash(String casperInput, int noRepeatingUnits, String carbBuilderVersion, String customDihedral) throws NoSuchAlgorithmException
-    {
-        MessageDigest messageDigest = MessageDigest.getInstance("SHA-256");
-        String input = casperInput +  " " + noRepeatingUnits + " " + carbBuilderVersion + " " + customDihedral;
-        byte[] output = messageDigest.digest(input.getBytes());
-        return escapeHash(output);
-    }
-
-    private static String escapeHash(byte[] bytes)
-    {
-        String out = "";
-        for(byte by: bytes)
-        {
-            int b = Math.abs(by);
-            if(b < 48 || (b > 57 && b < 65) || (b > 90 && b < 97) || b > 122)
-                out += (int) b;
-            else
-                out += (char)b;
-
-        }
-        return out;
-    }
-
     public String getPdbFilePath()
     {
         return pdbFilePath;

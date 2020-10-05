@@ -43,7 +43,7 @@ public class BuildRequestController
     {
         if(!request.isValid())
             return ResponseEntity.badRequest().body("Invalid Input");
-        String buildHash = PdbEntry.getCasperHash(request.getCasperInput(), request.getNoRepeatingUnits(), carbBuilderVersion, request.getCustomDihedral());
+        String buildHash = PdbBuild.getBuildHash(request.getCasperInput(), request.getNoRepeatingUnits(), carbBuilderVersion, request.getCustomDihedral());
         Optional<PdbBuild> optionalPdbBuild = pdbBuildAccess.findByBuildHash(buildHash);
         PdbBuild build;
         if(!optionalPdbBuild.isPresent())
